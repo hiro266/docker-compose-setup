@@ -15,18 +15,26 @@ services:
       rm -f log/development.log &&
       bundle install &&
       rails db:create &&
-      rails s -p 3000 -b '0.0.0.0'"
+      rails s"
     volumes:
       - .:/docker-compose-setup
       - public-data:/docker-compose-setup/public
       - tmp-data:/docker-compose-setup/tmp
       - log-data:/docker-compose-setup/log
-    ports:
-      - "3000:3000"
     depends_on:
       - db
     stdin_open: true
     tty: true
+  web:
+    build:
+      context: nginx
+    volumes:
+      - public-data:/docker-compose-setup/public
+      - tmp-data:/docker-compose-setup/tmp
+    ports:
+      - 80:80
+    depends_on:
+      - app
 volumes:
   mysql-data:
   public-data:
