@@ -10,7 +10,7 @@ default: &default
 
   # Additional paths webpack should lookup modules
   # ['app/assets', 'engine/foo/app/assets']
-  additional_paths: []
+  additional_paths: [ ]
 
   # Reload manifest.json on all requests so we reload latest compiled packs
   cache_manifest: false
@@ -54,10 +54,13 @@ development:
   # Reference: https://webpack.js.org/configuration/dev-server/
   dev_server:
     https: false
-    host: localhost
+    host: webpacker
     port: 3035
     public: localhost:3035
-    hmr: false
+    # Hot Module Replacement （HMR） は webpack の最も便利な機能の一つ
+    # 開発時のみに利用する機能
+    # アプリケーションの実行中に、完全にリロードすることなくモジュールを交換、追加、または削除することで、開発スピードが大幅にアップする
+    hmr: true
     # Inline should be set to true if using HMR
     inline: true
     overlay: true
