@@ -1,0 +1,34 @@
+version: '3'
+services:
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: setup
+    ports:
+      - '3406:3306'
+    volumes:
+      - mysql-data:/var/lib/mysql
+  app:
+    build: .
+    command: >
+      bash -c "rm -f tmp/pids/* &&
+      rm -f log/development.log &&
+      bundle install &&
+      rails db:create &&
+      rails s -p 3000 -b '0.0.0.0'"
+    volumes:
+      - .:/docker-compose-setup
+      - public-data:/docker-compose-setup/public
+      - tmp-data:/docker-compose-setup/tmp
+      - log-data:/docker-compose-setup/log
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    stdin_open: true
+    tty: true
+volumes:
+  mysql-data:
+  public-data:
+  tmp-data:
+  log-data:
